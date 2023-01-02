@@ -14,7 +14,8 @@ export const getArticles = async (
     const articles = await Article.find().sort('-updatedAt')
       .limit(limit * 1)
       .skip((page - 1) * limit)
-      .populate('user', 'name subscribers');
+      .populate('user', 'name subscribers')
+      .populate('category', 'name');
 
     const total = await Article.find().countDocuments();
 
