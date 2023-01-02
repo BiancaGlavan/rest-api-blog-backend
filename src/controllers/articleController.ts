@@ -15,7 +15,7 @@ export const getArticles = async (
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .populate('user', 'name subscribers')
-      .populate('category', 'name');
+      .populate('category', 'title');
 
     const total = await Article.find().countDocuments();
 
