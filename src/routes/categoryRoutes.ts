@@ -1,5 +1,5 @@
 import express from 'express';
-import { getCategories, getCategoryById, createCategory, getCategoryArticles } from '../controllers/categoryController';
+import { getCategories, getCategoryById, createCategory, getCategoryArticles, updateCategory } from '../controllers/categoryController';
 import { isAdmin, isAuth } from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -16,6 +16,10 @@ router.get('/:id/articles', getCategoryArticles);
 
 // add category
 router.post('/', [isAuth, isAdmin], createCategory);
+
+//update category
+
+router.put('/:id', [isAuth, isAdmin], updateCategory);
 
 
 export default router;

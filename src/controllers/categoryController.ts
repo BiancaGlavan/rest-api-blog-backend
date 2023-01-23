@@ -39,6 +39,7 @@ export const createCategory = async (
 
     const joiSchema = Joi.object({
       title: Joi.string().min(3).max(60).required(),
+      image: Joi.string().min(3),
     });
 
     const { error } = joiSchema.validate(req.body);
@@ -47,8 +48,8 @@ export const createCategory = async (
       return res.status(400).send(error);
     }
 
-    const { title } = req.body;
-    const newcategory = { title };
+    const { title, image } = req.body;
+    const newcategory = { title, image };
     const category = await Category.create(newcategory);
 
     return res.status(201).json(category);
@@ -86,4 +87,41 @@ export const getCategoryArticles = async (
       currentPage: page,
     });
   } catch (error) {}
+};
+
+export const updateCategory = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = req.params.id;
+    const userId = req.userId;
+
+    const oldCategory = await Category.findById(id);
+
+    if (!oldCategory) {
+      return res.status(400).send('wrong category id');
+    }
+
+    const joiSchema = Joi.object({
+      title: Joi.string().min(3).max(60).required(),
+      image: Joi.string().min(3),
+    });
+
+    const { error } = joiSchema.validate(req.body);
+
+    if (error) {
+      return res.status(400).send(error);
+    }
+    const { title,  image } = req.body;
+    Object.assign(oldCategory, { title, image });
+
+    const updatedCategory = await oldCategory.save();
+
+    return res.status(201).json(updatedCategory);
+
+  } catch (error) {
+    return res.status(400).json(error);
+  }
 };
