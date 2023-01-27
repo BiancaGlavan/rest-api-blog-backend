@@ -176,7 +176,7 @@ export const updateArticle = async (
     const oldArticle = await Article.findById(id);
 
     if (!oldArticle) {
-      return res.status(400).send('wrong article id');
+      return res.status(400).json('wrong article id');
     }
 
     const oldTags = oldArticle.tags;
@@ -186,38 +186,21 @@ export const updateArticle = async (
       title: Joi.string().min(3).max(60).required(),
       description: Joi.string().min(3).required(),
       image: Joi.string(),
-      imageThumb: Joi.string(),
-      tags: Joi.array().items(Joi.string().hex().length(24)),
-      likes: Joi.array().items(Joi.string().hex().length(24)),
       category: Joi.string().hex().length(24),
-      user: Joi.string().hex().length(24),
     });
 
     const { error } = joiSchema.validate(req.body);
 
     if (error) {
-      return res.status(400).send(error);
+      return res.status(400).json(error);
     }
 
-    const { title, description, tags, category, image, imageThumb, user } = req.body;
-    const newArticle = { title, description, user, tags, category, image, imageThumb };
+    const { title, description, category, image } = req.body;
+    const newArticle = { title, description, category, image };
 
     Object.assign(oldArticle, newArticle);
 
     const updatedArticle = await oldArticle.save();
-
-    const addedTags = difference(newArticle.tags, oldTags);
-    const removedTags = difference(oldTags, newArticle.tags);
-
-    const addTags = await Tag.updateMany(
-      { _id: addedTags },
-      { $push: { articles: updatedArticle._id } }
-    );
-
-    const removeTags = await Tag.updateMany(
-      { _id: removedTags },
-      { $pull: { articles: updatedArticle._id } }
-    );
 
     if (oldCategory !== newArticle.category) {
       const removeArticleFromOldCategory = await Category.findByIdAndUpdate(oldCategory, {
