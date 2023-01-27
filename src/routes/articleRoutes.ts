@@ -5,8 +5,9 @@ import {
   getArticleById,
   likeArticle,
   updateArticle,
+  deleteArticle,
 } from '../controllers/articleController';
-import { isAuth } from '../middleware/authMiddleware';
+import { isAdmin, isAuth } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
@@ -24,5 +25,8 @@ router.post('/', isAuth, createArticle);
 
 // like / dislike an article
 router.post('/like/:id', isAuth, likeArticle);
+
+//delete article
+router.delete('/:id/delete', [isAuth, isAdmin], deleteArticle);
 
 export default router;
