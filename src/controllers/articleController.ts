@@ -141,10 +141,10 @@ export const likeArticle = async (
 
     if (article.likes.includes(userId)) {
       const removeLike = await article.updateOne({ $pull: { likes: userId } });
-      return res.status(200).json('Like removed from article');
+      return res.status(200).json({ message: 'Like removed from article' });
     } else {
       const addLike = await article.updateOne({ $push: { likes: userId } });
-      return res.status(200).json('Like added to article');
+      return res.status(200).json({ message: 'Like added to article' });
     }
   } catch (error) {
     return res.status(400).json(error);
