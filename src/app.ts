@@ -13,6 +13,7 @@ import categoryRoutes from './routes/categoryRoutes';
 import tagRoutes from './routes/tagRoutes';
 import { Deta } from 'deta';
 import { isAuth } from './middleware/authMiddleware';
+import commentRoutes from './routes/commentRoutes';
 
 const app = express();
 dotenv.config();
@@ -36,6 +37,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/articles', articleRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/tags', tagRoutes);
+app.use('/api/comments', commentRoutes);
 
 app.get('/', (req, res) => {
   return res.send('welcome to blog rest api.');

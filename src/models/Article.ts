@@ -1,4 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose';
+import { IComment } from './Comment';
 import { IUserModel } from './User';
 
 export interface IArticle {
@@ -12,6 +13,7 @@ export interface IArticle {
   tags: string[];
   category: string;
   likes: string[];
+  comments: IComment[];
   _doc: Omit<this,'_doc'>; // try to do this in order to acces the _doc object
 }
 
@@ -54,6 +56,13 @@ const articleSchema = new mongoose.Schema(
         ref: 'Tag',
         default: [],
       },
+    ],
+    comments: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: 'Comment',
+        default: [],
+      }
     ],
   },
   { timestamps: true }

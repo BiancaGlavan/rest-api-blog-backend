@@ -125,3 +125,25 @@ export const updateCategory = async (
     return res.status(400).json(error);
   }
 };
+
+export const deleteCategory = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+
+  try {
+    const category = await Category.findById(id);
+
+    if (!category) {
+      return res.status(400).json('Wrong category id.');
+    }
+
+    await category.remove();
+
+    return res.status(200).json(category);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
