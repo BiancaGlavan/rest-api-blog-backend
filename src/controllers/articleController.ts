@@ -40,7 +40,8 @@ export const getArticleById = async (
   try {
     const article = await Article.findById(id)
       .populate('user', 'name subscribers')
-      .populate('category', 'title');
+      .populate('category', 'title')
+      .populate('comments', 'text user')
 
     return res.status(200).json(article);
   } catch (error) {
