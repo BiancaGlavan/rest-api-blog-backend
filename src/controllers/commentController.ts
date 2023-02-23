@@ -61,3 +61,24 @@ export const createComment = async (
   }
 };
 
+export const deleteComment = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  const id = req.params.id;
+
+  try {
+    const comment = await Comment.findById(id);
+
+    if (!comment) {
+      return res.status(400).json('Wrong comment id.');
+    }
+
+    await comment.remove();
+
+    return res.status(200).json(comment);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
