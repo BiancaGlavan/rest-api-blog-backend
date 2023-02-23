@@ -76,13 +76,13 @@ export const deleteComment = async (
       return res.status(400).json('Wrong comment id.');
     }
 
-    if (userId !== comment.user) {
+    if (comment && userId !== comment.user.toString()) {
       return res.status(400).json('You can only delete your own comment.');
     }
 
     await comment.remove();
 
-    return res.status(200).json(comment);
+    return res.status(200).json({message: 'comment deleted', comment});
   } catch (error) {
     return res.status(400).json(error);
   }
