@@ -3,6 +3,7 @@ import { IUser } from './User';
 
 
 export interface IComment {
+  _id: string;
   text: string;
   createdAt: Date;
   user: IUser;
