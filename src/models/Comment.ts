@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
+import { IUser } from './User';
 
 
 export interface IComment {
   text: string;
   createdAt: Date;
-  user: string;
+  user: IUser;
   article: string;
 }
 
