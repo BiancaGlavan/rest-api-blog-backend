@@ -67,12 +67,17 @@ export const deleteComment = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
+  const userId = req.userId;
 
   try {
     const comment = await Comment.findById(id);
 
     if (!comment) {
       return res.status(400).json('Wrong comment id.');
+    }
+
+    if (userId !== comment.user) {
+      return res.status(400).json('You can only delete your own comment.');
     }
 
     await comment.remove();

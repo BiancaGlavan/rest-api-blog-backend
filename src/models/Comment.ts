@@ -6,7 +6,7 @@ export interface IComment {
   _id: string;
   text: string;
   createdAt: Date;
-  user: IUser;
+  user: string;
   article: string;
 }
 

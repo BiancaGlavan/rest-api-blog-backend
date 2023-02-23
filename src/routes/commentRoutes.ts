@@ -11,7 +11,7 @@ router.get('/article/:id', getArticleComments);
 router.post('/add', [isAuth], createComment);
 
 // delete comment
-router.delete('/:id/delete', [isAuth, isAdmin], deleteComment);
+router.delete('/:id/delete', [isAuth], deleteComment);
 
 
 export default router;
